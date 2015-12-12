@@ -15,7 +15,6 @@ public class TestProdCons extends Simulateur {
     int deviationTempsMoyenConsommation;
     boolean inhiber;
 
-    protected int option;
 
     protected void init(String file) {
         Properties properties = new Properties();
@@ -29,7 +28,7 @@ public class TestProdCons extends Simulateur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+        //On parse le fichier pour récupérer les valeurs des paramètres de simulation
         nbProd= Integer.parseInt(properties.getProperty("nbProd"));
         nbCons= Integer.parseInt(properties.getProperty("nbCons"));
         nbBuffer= Integer.parseInt(properties.getProperty("nbBuffer"));
