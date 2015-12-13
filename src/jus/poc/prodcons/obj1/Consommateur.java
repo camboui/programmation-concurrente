@@ -20,8 +20,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 
 	@Override
 	public int nombreDeMessages() {
-		// TODO Auto-generated method stub
-		return 0;
+		return currentNbMessLect;
 	}
 
 	
