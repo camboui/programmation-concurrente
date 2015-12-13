@@ -55,8 +55,16 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		
 		//Initialiser les prod
+		for(int i=0;i<nbProd;i++)
+		{
+			lesProds.add(new Producteur(type, observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data));
+		}
 		
 		//initialiser les cons
+		for(int i=0;i<nbCons;i++)
+		{
+			lesCons.add(new Consommateur(type, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
+		}
 		
 		//les faire communiquer
 	}
