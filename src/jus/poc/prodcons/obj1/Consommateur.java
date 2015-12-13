@@ -11,8 +11,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data)
 			throws ControlException {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		currentNbMessLect=0; 
-		nextLectTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		currentNbMessLect = 0; 
+		nextLectTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		this.data = data;
 
 	}
@@ -33,8 +33,10 @@ public class Consommateur extends Acteur implements _Consommateur {
 			
 			//Il consomme
 			currentNbMessLect++;
+			MessageX m;
 			try {
-				data.get(this);
+				m = data.get(this);
+				System.out.println(m.toString()+" lu par "+this.getName());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

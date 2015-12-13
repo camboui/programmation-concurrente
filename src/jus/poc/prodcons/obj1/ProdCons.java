@@ -5,14 +5,14 @@ public class ProdCons implements Tampon {
 
 	int taille, nbPlein;
 	int in, out;
-	Message[] buffer;
+	MessageX[] buffer;
 	
 	public ProdCons(int taille){
 		this.nbPlein = 0;
 		this.in = 0;
 		this.out = 0;
 		this.taille = taille;
-		buffer = new Message[taille];
+		buffer = new MessageX[taille];
 	}
 	
 	@Override
@@ -24,7 +24,7 @@ public class ProdCons implements Tampon {
 	}
 
 	@Override
-	public synchronized Message get(_Consommateur arg0) throws Exception, InterruptedException {
+	public synchronized MessageX get(_Consommateur arg0) throws Exception, InterruptedException {
 		while(nbPlein == 0){
 			wait();
 		}
