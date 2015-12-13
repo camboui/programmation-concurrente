@@ -5,13 +5,15 @@ public class Consommateur extends Acteur implements _Consommateur {
 
 	int currentNbMessLect; // nombre de message(s) actuellement lu(s)
 	Aleatoire nextLectTimer; // temps avant la prochaine lecture
+	ProdCons data;
 	
 	protected Consommateur(int type, Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement)
+			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data)
 			throws ControlException {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		currentNbMessLect=0; 
 		nextLectTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		this.data = data;
 
 	}
 
@@ -31,8 +33,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 			
 			//Il consomme
 			currentNbMessLect++;
-			
-			//Il doit retirer = get, il faut un accès au buffer ?
+			try {
+				data.get(this);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

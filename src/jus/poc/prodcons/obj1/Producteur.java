@@ -6,14 +6,16 @@ public class Producteur extends Acteur implements _Producteur {
 	int nbMessProd; // nombre de messages qui doivent êtres produits
 	int currentNbMessProd; // nombre de message(s) actuellement produit(s)
 	Aleatoire nextProdTimer; // temps avant à la prochaine production
+	ProdCons data;
 	
 	protected Producteur(int type, Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement)
+			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data)
 			throws ControlException {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
+
 		currentNbMessProd=0;
 		nextProdTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		
+		this.data=data;
 		//nbMessProd=new Aleatoire(type, deviation);
 	}
 
@@ -36,8 +38,12 @@ public class Producteur extends Acteur implements _Producteur {
 			}
 			
 			//Puis on produit
-			
-			//Il doit déposer = put, il faut un accès au buffer ?
+			try {
+				data.put(this, new MessageX());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
