@@ -50,6 +50,15 @@ public class TestProdCons extends Simulateur {
 	protected void run() throws Exception {
 		// TODO Auto-generated method stub
 		init("./jus/poc/prodcons/options/options.xml");
+		ProdCons data = new ProdCons(nbBuffer);
+		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
+		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
+		
+		//Initialiser les prod
+		
+		//initialiser les cons
+		
+		//les faire communiquer
 	}
 	
 	public static void main(String[] args){
