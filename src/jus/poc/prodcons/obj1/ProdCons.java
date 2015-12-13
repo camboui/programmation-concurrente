@@ -32,7 +32,7 @@ public class ProdCons implements Tampon {
 		out = (out+1)%taille;
 		nbPlein--;
 		notifyAll();
-		return r;
+		return (MessageX) r;
 	}
 	
 
@@ -41,7 +41,7 @@ public class ProdCons implements Tampon {
 		while(nbPlein >= taille){
 			wait();
 		}
-		buffer[in] = m;
+		buffer[in] = (MessageX) m;
 		in = (in+1)%taille;
 		nbPlein++;
 		notifyAll();

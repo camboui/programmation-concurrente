@@ -1,7 +1,6 @@
 package jus.poc.prodcons.obj1;
 import jus.poc.prodcons.*;
 
-
 public class Producteur extends Acteur implements _Producteur {
 
 	int nbMessProd; // nombre de messages qui doivent êtres produits
@@ -10,13 +9,14 @@ public class Producteur extends Acteur implements _Producteur {
 	ProdCons data;
 	
 	protected Producteur(int type, Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data)
+			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data,int toProduce)
 			throws ControlException {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		currentNbMessProd = 0;
-		nextProdTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		this.data = data;
-		//nbMessProd=new Aleatoire(type, deviation);
+
+		currentNbMessProd=0;
+		nextProdTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		this.data=data;
+		nbMessProd=toProduce;
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class Producteur extends Acteur implements _Producteur {
 	public void run()
 	{
 		//on produit nbMessProd messages
-		for(currentNbMessProd=0 ; currentNbMessProd<nbMessProd ; currentNbMessProd++)
+		for(currentNbMessProd=0;currentNbMessProd < nbMessProd;currentNbMessProd++)
 		{
 			// le producteur ne produit pas pendant un temps aléatoire
 			try {
@@ -38,9 +38,8 @@ public class Producteur extends Acteur implements _Producteur {
 			}
 			
 			//Puis on produit
-			MessageX m = new MessageX(this.getName());
 			try {
-				data.put(this, m);
+				data.put(this, new MessageX(null));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

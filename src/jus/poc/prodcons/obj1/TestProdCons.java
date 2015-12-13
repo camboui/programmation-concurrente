@@ -8,13 +8,14 @@ import java.util.Properties;
 
 public class TestProdCons extends Simulateur {
 
-	int nbProd,nbCons,nbBuffer,nombreMoyenDeProduction;
-    int deviationNombreMoyenDeProduction,nombreMoyenDeConsommation;
-    int deviationNombreMoyenDeConsommation,tempsMoyenProduction;
-    int deviationTempsMoyenProduction,tempsMoyenConsommation;
-    int deviationTempsMoyenConsommation;
+	int nbProd,nbCons,nbBuffer;
+    int nombreMoyenDeProduction,deviationNombreMoyenDeProduction;
+    int nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation;
+    int tempsMoyenProduction, deviationTempsMoyenProduction;
+    int tempsMoyenConsommation,deviationTempsMoyenConsommation;
     boolean inhiber;
 
+    
 
     protected void init(String file) {
         Properties properties = new Properties();
@@ -53,17 +54,18 @@ public class TestProdCons extends Simulateur {
 		ProdCons data = new ProdCons(nbBuffer);
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
+		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
 		
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
 		{
-			lesProds.add(new Producteur(type, observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data));
+			lesProds.add(new Producteur(1, observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data, toProduce.next()));
 		}
 		
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
-			lesCons.add(new Consommateur(type, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
+			lesCons.add(new Consommateur(2, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
 		}
 		
 		//les faire communiquer
