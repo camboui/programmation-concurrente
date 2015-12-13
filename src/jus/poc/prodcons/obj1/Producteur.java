@@ -21,7 +21,7 @@ public class Producteur extends Acteur implements _Producteur {
 
 	@Override
 	public int nombreDeMessages() {
-		return currentNbMessProd;
+		return nbMessProd-currentNbMessProd;
 	}
 	
 	public void run()
@@ -39,7 +39,7 @@ public class Producteur extends Acteur implements _Producteur {
 			
 			//Puis on produit
 			try {
-				data.put(this, new MessageX());
+				data.put(this, new MessageX(null));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
