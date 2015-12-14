@@ -8,10 +8,10 @@ public class Consommateur extends Acteur implements _Consommateur {
 	Aleatoire nextLectTimer; // temps avant la prochaine lecture
 	ProdCons data;
 	
-	protected Consommateur(int type, Observateur observateur,
+	protected Consommateur(Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data, int toConsume)
 			throws ControlException {
-		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		currentNbMessLect = 0; 
 		nextLectTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		this.data = data;
