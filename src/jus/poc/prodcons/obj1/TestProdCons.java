@@ -67,7 +67,7 @@ public class TestProdCons extends Simulateur {
 		{
 			lesCons.add(new Consommateur(2, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
 		}
-		
+		System.out.println();
 		//les faire communiquer
 	}
 	

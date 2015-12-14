@@ -28,11 +28,11 @@ public class ProdCons implements Tampon {
 		while(nbPlein == 0){
 			wait();
 		}
-		Message r = buffer[out];
+		MessageX r = buffer[out];
 		out = (out+1)%taille;
 		nbPlein--;
 		notifyAll();
-		return (MessageX) r;
+		return  r;
 	}
 	
 
