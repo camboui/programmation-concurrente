@@ -25,7 +25,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized MessageX get(_Consommateur arg0) throws Exception, InterruptedException {
-		while(nbPlein == 0){
+		while(nbPlein <= 0){
 			wait();
 		} 
 		MessageX r = buffer[out];

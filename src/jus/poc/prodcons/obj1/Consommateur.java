@@ -22,7 +22,9 @@ public class Consommateur extends Acteur implements _Consommateur {
 	public void run() {
 		
 		//Le consommateur ne s'arrête jamais de consommer
-		for(int currentNbMessLect=0;currentNbMessLect < toConsume; currentNbMessLect ++)
+		
+		//for(int currentNbMessLect=0;currentNbMessLect < toConsume; currentNbMessLect ++)
+		while(true)
 		{
 			//Le consommateur ne consomme pas pendant un temps aléatoire
 			try {
