@@ -8,10 +8,10 @@ public class Producteur extends Acteur implements _Producteur {
 	Aleatoire nextProdTimer; // temps avant à la prochaine production
 	ProdCons data;
 	 
-	protected Producteur(int type, Observateur observateur,
+	protected Producteur(Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data,int toProduce)
 			throws ControlException {
-		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		super(Acteur.typeProducteur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 
 		currentNbMessProd=0;
 		nextProdTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);

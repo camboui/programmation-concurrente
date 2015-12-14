@@ -57,13 +57,13 @@ public class TestProdCons extends Simulateur {
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
 		{
-			lesProds.add(new Producteur(1, observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data, toProduce.next()));
+			lesProds.add(new Producteur(observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data, toProduce.next()));
 		}
 		
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
-			lesCons.add(new Consommateur(2, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data,toConsume.next()));
+			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data,toConsume.next()));
 		}
 		System.out.println();
 		//les faire communiquer
