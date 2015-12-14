@@ -15,7 +15,7 @@ public class TestProdCons extends Simulateur {
     int tempsMoyenConsommation,deviationTempsMoyenConsommation;
     boolean inhiber;
 
-    
+     
 
     protected void init(String file) {
         Properties properties = new Properties();

@@ -7,7 +7,7 @@ public class Producteur extends Acteur implements _Producteur {
 	int currentNbMessProd; // nombre de message(s) actuellement produit(s)
 	Aleatoire nextProdTimer; // temps avant à la prochaine production
 	ProdCons data;
-	
+	 
 	protected Producteur(int type, Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data,int toProduce)
 			throws ControlException {

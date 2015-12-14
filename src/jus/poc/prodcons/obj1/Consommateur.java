@@ -14,7 +14,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 		currentNbMessLect = 0; 
 		nextLectTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		this.data = data;
-
+ 
 	}
 
 	public void run() {
