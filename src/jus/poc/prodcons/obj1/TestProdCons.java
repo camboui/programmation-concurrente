@@ -47,12 +47,12 @@ public class TestProdCons extends Simulateur {
 
 	@Override
 	protected void run() throws Exception {
-		// TODO Auto-generated method stub
 		init("./jus/poc/prodcons/options/options.xml");
 		ProdCons data = new ProdCons(nbBuffer);
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
+		Aleatoire toConsume = new Aleatoire(nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation);
 		
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
@@ -63,7 +63,7 @@ public class TestProdCons extends Simulateur {
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
-			lesCons.add(new Consommateur(2, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
+			lesCons.add(new Consommateur(2, observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data,toConsume.next()));
 		}
 		System.out.println();
 		//les faire communiquer

@@ -4,23 +4,25 @@ import jus.poc.prodcons.*;
 public class Consommateur extends Acteur implements _Consommateur {
 
 	int currentNbMessLect; // nombre de message(s) actuellement lu(s)
+	int toConsume; // nombre de messages qui doivent êtres lus
 	Aleatoire nextLectTimer; // temps avant la prochaine lecture
 	ProdCons data;
 	
 	protected Consommateur(int type, Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data)
+			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data, int toConsume)
 			throws ControlException {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		currentNbMessLect = 0; 
 		nextLectTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		this.data = data;
+		this.toConsume=toConsume;
  
 	}
 
 	public void run() {
 		
 		//Le consommateur ne s'arrête jamais de consommer
-		while(true)
+		for(int currentNbMessLect=0;currentNbMessLect < toConsume; currentNbMessLect ++)
 		{
 			//Le consommateur ne consomme pas pendant un temps aléatoire
 			try {
