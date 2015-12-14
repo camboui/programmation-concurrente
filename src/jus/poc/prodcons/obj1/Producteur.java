@@ -39,7 +39,7 @@ public class Producteur extends Acteur implements _Producteur {
 			
 			//Puis on produit
 			try {
-				data.put(this, new MessageX(null));
+				data.put(this, new MessageX(this.getName()));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
