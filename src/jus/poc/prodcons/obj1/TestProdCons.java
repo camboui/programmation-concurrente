@@ -65,13 +65,16 @@ public class TestProdCons extends Simulateur {
 		{
 			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data,toConsume.next()));
 		}
-		System.out.println();
 		//les faire communiquer
+		for(int i=0 ; i<lesProds.size() ; i++){
+			lesProds.get(i).start();
+		}
+		for(int i=0 ; i<lesCons.size() ; i++){
+			lesCons.get(i).start();
+		}
 	}
 	
 	public static void main(String[] args){
-		System.out.println("exec");
-
 		new TestProdCons(new Observateur()).start();
 	}
    
