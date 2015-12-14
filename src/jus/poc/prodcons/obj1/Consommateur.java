@@ -6,7 +6,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	int currentNbMessLect; // nombre de message(s) actuellement lu(s)
 	int toConsume; // nombre de messages qui doivent êtres lus
 	Aleatoire nextLectTimer; // temps avant la prochaine lecture
-	ProdCons data;
+	ProdCons data; // lien avec les producteurs
 	
 	protected Consommateur(Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement,ProdCons data, int toConsume)

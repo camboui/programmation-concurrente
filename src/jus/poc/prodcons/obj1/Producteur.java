@@ -6,7 +6,7 @@ public class Producteur extends Acteur implements _Producteur {
 	int nbMessProd; // nombre de messages qui doivent êtres produits
 	int currentNbMessProd; // nombre de message(s) actuellement produit(s)
 	Aleatoire nextProdTimer; // temps avant à la prochaine production
-	ProdCons data;
+	ProdCons data; // moyen de comunication avec les consommateurs
 	 
 	protected Producteur(Observateur observateur,
 			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data,int toProduce)
@@ -20,6 +20,9 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 
 	@Override
+	/*
+	 * @return : nombre de message qu'il reste à écrire
+	 */
 	public int nombreDeMessages() {
 		return nbMessProd-currentNbMessProd;
 	}
@@ -39,7 +42,7 @@ public class Producteur extends Acteur implements _Producteur {
 			
 			//Puis on produit
 			try {
-				data.put(this, new MessageX(this.getName()));
+				data.put(this, new MessageX(this.getName())); // met son nom dans le message
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
