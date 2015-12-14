@@ -9,13 +9,11 @@ import java.util.Properties;
 public class TestProdCons extends Simulateur {
 
 	int nbProd,nbCons,nbBuffer;
-    int nombreMoyenDeProduction,deviationNombreMoyenDeProduction;
-    int nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation;
-    int tempsMoyenProduction, deviationTempsMoyenProduction;
-    int tempsMoyenConsommation,deviationTempsMoyenConsommation;
-    boolean inhiber;
-
-     
+	int nombreMoyenDeProduction,deviationNombreMoyenDeProduction;
+	int nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation;
+	int tempsMoyenProduction, deviationTempsMoyenProduction;
+	int tempsMoyenConsommation,deviationTempsMoyenConsommation;
+	boolean inhiber;
 
     protected void init(String file) {
         Properties properties = new Properties();
