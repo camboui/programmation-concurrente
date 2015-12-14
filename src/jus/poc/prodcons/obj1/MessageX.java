@@ -1,7 +1,7 @@
 package jus.poc.prodcons.obj1;
-import jus.poc.prodcons.*;
 
- 
+import jus.poc.prodcons.Message;
+
 public class MessageX implements Message {
 
 	String createur; // Permet de stocker qui à produit ce message
@@ -13,5 +13,4 @@ public class MessageX implements Message {
 	public String toString(){
 		return createur;
 	}
-	
 }
