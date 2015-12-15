@@ -47,7 +47,7 @@ public class TestProdCons extends Simulateur {
 	@Override
 	protected void run() throws Exception {
 		init("./jus/poc/prodcons/options/options.xml");
-		ProdCons data = new ProdCons(nbBuffer);
+		ProdCons data = new ProdCons(nbBuffer,observateur);
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
@@ -59,12 +59,14 @@ public class TestProdCons extends Simulateur {
 		for(int i=0;i<nbProd;i++)
 		{
 			lesProds.add(new Producteur(observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data, toProduce.next()));
+			 observateur.newProducteur(lesProds.get(i));
 		}
 		
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
 			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
+			observateur.newConsommateur(lesCons.get(i));
 		}
 
 		//les faire communiquer
@@ -87,8 +89,6 @@ public class TestProdCons extends Simulateur {
 		for(int i=0 ; i<lesCons.size() ; i++){
 			lesCons.get(i).stop();
 		}
-
-		
 	}
 	
 	public static void main(String[] args){
