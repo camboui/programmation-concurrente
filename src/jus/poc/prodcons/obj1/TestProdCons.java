@@ -10,7 +10,6 @@ public class TestProdCons extends Simulateur {
 
 	int nbProd,nbCons,nbBuffer;
 	int nombreMoyenDeProduction,deviationNombreMoyenDeProduction;
-	int nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation;
 	int tempsMoyenProduction, deviationTempsMoyenProduction;
 	int tempsMoyenConsommation,deviationTempsMoyenConsommation;
 	boolean inhiber;
@@ -52,7 +51,6 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
-		Aleatoire toConsume = new Aleatoire(nombreMoyenDeConsommation, deviationNombreMoyenDeConsommation);
 		
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
@@ -63,7 +61,7 @@ public class TestProdCons extends Simulateur {
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
-			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data,toConsume.next()));
+			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
 		}
 
 		//les faire communiquer
@@ -73,6 +71,8 @@ public class TestProdCons extends Simulateur {
 		for(int i=0 ; i<lesCons.size() ; i++){
 			lesCons.get(i).start();
 		}
+		
+		
 		
 	}
 	
