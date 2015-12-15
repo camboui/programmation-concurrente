@@ -1,6 +1,5 @@
 package jus.poc.prodcons.v2;
 import jus.poc.prodcons.*;
-import jus.poc.prodcons.v3.MessageX;
 
 public class ProdCons implements Tampon {
 

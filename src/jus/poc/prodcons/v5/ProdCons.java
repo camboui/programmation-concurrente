@@ -8,13 +8,13 @@ public class ProdCons implements Tampon {
 	int nbPlein; // combien de cases sont pleines
 	int in, out; // ou doit être mis/lu le prochain message
 	MessageX[] buffer; // le buffer en lui même
-	Semaphore sCons, sProd,sMutex; // Les sémaphores producteur et consommateur
 	Observateur observateur;
 	boolean inhiber;
 	
-	final Lock lock = new ReentrantLock();
-	final Condition notFull  = lock.newCondition(); 
-	final Condition notEmpty = lock.newCondition(); 
+
+	final Lock lock = new ReentrantLock();// On créer un lock
+	final Condition notFull  = lock.newCondition(); // condition lock notFull
+	final Condition notEmpty = lock.newCondition(); // condition lock notEmpty
 
 	   
 	public ProdCons(int taille,Observateur observateur,boolean inhiber){
@@ -25,9 +25,6 @@ public class ProdCons implements Tampon {
 		this.inhiber=inhiber;
 		this.observateur=observateur;
 		buffer = new MessageX[taille];
-		sProd = new Semaphore(taille);
-		sCons = new Semaphore(0);
-		sMutex = new Semaphore(1);
 	}
 	
 	@Override
@@ -41,10 +38,10 @@ public class ProdCons implements Tampon {
 	@Override
 	public MessageX get(_Consommateur arg0) throws Exception, InterruptedException {
 	
-	     lock.lock();
+	     lock.lock(); // On assure l'exclusion mutuelle
 	     try {
 	       while (nbPlein == 0){
-	    	   notEmpty.await();}
+	    	   notEmpty.await();} // attend que le buffer ne soit plus vide
 
 			MessageX r = buffer[out]; // on recupère le bon message
 			if(!inhiber){
@@ -53,10 +50,10 @@ public class ProdCons implements Tampon {
 			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
 			nbPlein--; // on elève une case du nombre de cases pleines
 	       
-			notFull.signal();
+			notFull.signal();  // Envoi d'un signal pour dire que le buffer n'est pas plein
 			return  r; // on retourne le message
 	     } finally {
-	       lock.unlock();
+	       lock.unlock(); //Quand on est plus dans la SC, on dévérouille son accès
 	     }
 	}
 	
@@ -64,10 +61,10 @@ public class ProdCons implements Tampon {
 	@Override
 	public void put(_Producteur arg0, Message m) throws Exception,InterruptedException {
 		
-	     lock.lock();
+	     lock.lock();  // On assure l'exclusion mutuelle
 	     try {
 	        while (nbPlein == taille){
-	    	   notFull.await();}
+	    	   notFull.await();} // attend que le buffer ne soit plus plein
 
 			buffer[in] = (MessageX) m; // on charge le message dans le buffer
 			if(!inhiber){
@@ -76,9 +73,9 @@ public class ProdCons implements Tampon {
 			in = (in+1)%taille; // on calcul la prochaine position du prochain message
 			nbPlein++; // on dit qu'un message de plus est à lire
 			
-	       notEmpty.signal();
+	       notEmpty.signal(); //Envoi un signal pour dire que le buffer n'est pas plein
 	     } finally {
-	       lock.unlock();
+	       lock.unlock(); //Quand on est plus dans la SC, on dévérouille son accès
 	     }
 	}
 
