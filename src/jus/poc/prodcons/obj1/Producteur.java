@@ -42,6 +42,7 @@ public class Producteur extends Acteur implements _Producteur {
 			
 			//Puis on produit
 			try {
+				System.out.println("Nouveau message par "+this.getName() );
 				data.put(this, new MessageX(this.getName())); // met son nom dans le message
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -37,7 +37,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			MessageX m;
 			try {
 				m = data.get(this);
-				System.out.println(m.toString()+" lu par "+this.getName());
+				System.out.println(this.getName() + " lit le message de "+ m.toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -79,9 +79,9 @@ public class TestProdCons extends Simulateur {
 		while(data.enAttente()!=0){}
 		
 		for(int i=0 ; i<lesProds.size() ; i++){
-			lesProds.get(i).join();
+			lesCons.get(i).stop();
 		}
-		System.exit(-1);
+
 		
 	}
 	
