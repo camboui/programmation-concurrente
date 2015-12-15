@@ -1,5 +1,6 @@
 package jus.poc.prodcons.v5;
 import jus.poc.prodcons.*;
+import java.util.concurrent.locks.*;
 
 public class ProdCons implements Tampon {
 
@@ -11,6 +12,11 @@ public class ProdCons implements Tampon {
 	Observateur observateur;
 	boolean inhiber;
 	
+	final Lock lock = new ReentrantLock();
+	final Condition notFull  = lock.newCondition(); 
+	final Condition notEmpty = lock.newCondition(); 
+
+	   
 	public ProdCons(int taille,Observateur observateur,boolean inhiber){
 		this.nbPlein = 0;
 		this.in = 0;
@@ -35,36 +41,45 @@ public class ProdCons implements Tampon {
 	@Override
 	public MessageX get(_Consommateur arg0) throws Exception, InterruptedException {
 	
-		//Si le buffer est vide, on attend jusqu'à ce qu'il contienne un message
-		sCons.P();
-		sMutex.P();
+	     lock.lock();
+	     try {
+	       while (nbPlein == 0){
+	    	   notEmpty.await();}
 
-		MessageX r = buffer[out]; // on recupère le bon message
-		if(!inhiber){
-			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());}
-		observateur.retraitMessage(arg0, r);
-		out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
-		nbPlein--; // on elève une case du nombre de cases pleines
-		sMutex.V(); // on reveille tout le monde histoire de voir si des producteurs ne pourraient pas mettre de nouveaux messages
-		//Réveille un thread
-		sProd.V();
-		
-		return  r; // on retourne le message
+			MessageX r = buffer[out]; // on recupère le bon message
+			if(!inhiber){
+				System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());}
+			observateur.retraitMessage(arg0, r);
+			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
+			nbPlein--; // on elève une case du nombre de cases pleines
+	       
+			notFull.signal();
+			return  r; // on retourne le message
+	     } finally {
+	       lock.unlock();
+	     }
 	}
 	
 
 	@Override
 	public void put(_Producteur arg0, Message m) throws Exception,InterruptedException {
-		sProd.P();
-		sMutex.P();
-		buffer[in] = (MessageX) m; // on charge le message dans le buffer
-		if(!inhiber){
-			System.out.println("Producteur "+arg0.identification() + " : " + m.toString());}
-		observateur.depotMessage(arg0, m);
-		in = (in+1)%taille; // on calcul la prochaine position du prochain message
-		nbPlein++; // on dit qu'un message de plus est à lire
-		sMutex.V();
-		sCons.V();// on reveille tous les autres, histoire que quelqu'un puisse lire ce message ou un autre, ou dépose un nouveau message après celui là
+		
+	     lock.lock();
+	     try {
+	        while (nbPlein == taille){
+	    	   notFull.await();}
+
+			buffer[in] = (MessageX) m; // on charge le message dans le buffer
+			if(!inhiber){
+				System.out.println("Producteur "+arg0.identification() + " : " + m.toString());}
+			observateur.depotMessage(arg0, m);
+			in = (in+1)%taille; // on calcul la prochaine position du prochain message
+			nbPlein++; // on dit qu'un message de plus est à lire
+			
+	       notEmpty.signal();
+	     } finally {
+	       lock.unlock();
+	     }
 	}
 
 	@Override
