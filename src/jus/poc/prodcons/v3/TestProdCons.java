@@ -52,6 +52,9 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
 		
+		// Class obs
+		observateur.init(nbProd, nbCons, nbBuffer);
+		
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
 		{
