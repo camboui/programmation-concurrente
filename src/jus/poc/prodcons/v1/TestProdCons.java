@@ -65,15 +65,15 @@ public class TestProdCons extends Simulateur {
 		}
 
 		//les faire communiquer
-		for(int i=0 ; i<lesProds.size() ; i++){
+		for(int i=0 ; i<nbProd ; i++){
 			lesProds.get(i).start();
 		}
-		for(int i=0 ; i<lesCons.size() ; i++){
+		for(int i=0 ; i<nbCons ; i++){
 			lesCons.get(i).start();
 		}
 		
 		//On attend pour terminer les consommateurs
-		for(int i=0 ; i<lesProds.size() ; i++){
+		for(int i=0 ; i<nbProd ; i++){
 			lesProds.get(i).join();
 		}
 		
@@ -81,10 +81,9 @@ public class TestProdCons extends Simulateur {
 		while(data.enAttente()!=0){}
 		
 		//On termine tous les consommateurs
-		for(int i=0 ; i<lesCons.size() ; i++){
+		for(int i=0 ; i<nbCons ; i++){
 			lesCons.get(i).stop();
 		}
-
 		
 	}
 	

@@ -4,14 +4,16 @@ import jus.poc.prodcons.*;
  
 public class MessageX implements Message {
 
-	String createur; // Permet de stocker qui à produit ce message
-	  
-	public MessageX(String producteur){
-		this.createur = producteur;
+	int idProd; // Permet de stocker qui à produit ce message
+	int messNum;
+	
+	public MessageX(int idProd,int messNum ){
+		this.idProd = idProd;
+		this.messNum = messNum;
 	}
 	
 	public String toString(){
-		return createur;
+		return "produit " + idProd + " message " + messNum;
 	}
 	
 }

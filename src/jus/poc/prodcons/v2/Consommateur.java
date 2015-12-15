@@ -32,10 +32,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 			
 			//Il consomme
 			currentNbMessLect++;
-			MessageX m;
 			try {
-				m = data.get(this);
-				System.out.println(this.getName() + " lit le message de "+ m.toString());
+				data.get(this);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
