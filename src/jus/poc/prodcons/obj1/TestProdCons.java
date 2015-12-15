@@ -72,7 +72,16 @@ public class TestProdCons extends Simulateur {
 			lesCons.get(i).start();
 		}
 		
+		for(int i=0 ; i<lesProds.size() ; i++){
+			lesProds.get(i).join();
+		}
 		
+		while(data.enAttente()!=0){}
+		
+		for(int i=0 ; i<lesProds.size() ; i++){
+			lesProds.get(i).join();
+		}
+		System.exit(-1);
 		
 	}
 	
