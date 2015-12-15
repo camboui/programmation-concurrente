@@ -10,17 +10,20 @@ public class Producteur extends Acteur implements _Producteur {
 	Observateur observateur;
 	int delaisProd;
 	Message mess;
+	int nbExemplaire; // nombre d'exemplaire à faire de chaque message
 	
 	protected Producteur(Observateur observateur,
-			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons data,int toProduce)
+			int moyenneTempsDeTraitement, int deviationTempsDeTraitement, 
+			ProdCons data, int toProduce, int toDuplique)
 			throws ControlException {
+		
 		super(Acteur.typeProducteur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-
-		this.observateur=observateur;
-		currentNbMessProd=0;
-		nextProdTimer=new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		this.data=data;
-		nbMessProd=toProduce;
+		this.observateur = observateur;
+		this.currentNbMessProd = 0;
+		this.nextProdTimer = new Aleatoire(moyenneTempsDeTraitement, deviationTempsDeTraitement);
+		this.data = data;
+		this.nbMessProd = toProduce;
+		this.nbExemplaire = toDuplique;
 	}
 
 	@Override
@@ -28,13 +31,13 @@ public class Producteur extends Acteur implements _Producteur {
 	 * @return : nombre de message qu'il reste à écrire
 	 */
 	public int nombreDeMessages() {
-		return nbMessProd-currentNbMessProd;
+		return (nbMessProd*nbExemplaire)-currentNbMessProd;
 	}
 	
 	public void run()
 	{
 		//on produit nbMessProd messages
-		for(currentNbMessProd=0;currentNbMessProd < nbMessProd;currentNbMessProd++)
+		for(currentNbMessProd=0 ; currentNbMessProd<nbMessProd ; currentNbMessProd++)
 		{
 			// le producteur ne produit pas pendant un temps aléatoire
 			try {
@@ -47,9 +50,9 @@ public class Producteur extends Acteur implements _Producteur {
 			
 			//Puis on produit
 			try {
-				mess=new MessageX(this.identification(),currentNbMessProd);
+				mess = new MessageX(this.identification(), currentNbMessProd, nbExemplaire);
 				observateur.productionMessage(this, mess, delaisProd);
-				data.put(this,mess); // met son nom dans le message
+				data.put(this, mess); // met son nom dans le message
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

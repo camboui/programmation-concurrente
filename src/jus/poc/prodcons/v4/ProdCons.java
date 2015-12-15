@@ -11,17 +11,17 @@ public class ProdCons implements Tampon {
 	Observateur observateur;
 	boolean inhiber;
 	
-	public ProdCons(int taille,Observateur observateur,boolean inhiber){
+	public ProdCons(int taille,Observateur observateur, boolean inhiber){
 		this.nbPlein = 0;
 		this.in = 0;
 		this.out = 0;
 		this.taille = taille;
-		this.inhiber=inhiber;
-		this.observateur=observateur;
-		buffer = new MessageX[taille];
-		sProd = new Semaphore(taille);
-		sCons = new Semaphore(0);
-		sMutex = new Semaphore(1);
+		this.inhiber = inhiber;
+		this.observateur = observateur;
+		this.buffer = new MessageX[taille];
+		this.sProd = new Semaphore(taille);
+		this.sCons = new Semaphore(0);
+		this.sMutex = new Semaphore(1);
 	}
 	
 	@Override
@@ -29,7 +29,13 @@ public class ProdCons implements Tampon {
 	 * @return : nombre de message en attente de lecteurs
 	 */
 	public int enAttente() {
-		return (in-out)%taille;
+		int nbAttente = 0;
+		for(int i=(out%taille) ; i<(in%taille) ; i++){
+			nbAttente += buffer[i].nbMessage;
+			System.out.println("en attendte() : "+nbAttente);
+		}
+		return nbAttente;
+		//return (in-out)%taille;
 	}
 
 	@Override
@@ -38,13 +44,20 @@ public class ProdCons implements Tampon {
 		//Si le buffer est vide, on attend jusqu'à ce qu'il contienne un message
 		sCons.P();
 		sMutex.P();
-
+		this.enAttente();
 		MessageX r = buffer[out]; // on recupère le bon message
 		if(!inhiber){
 			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());}
 		observateur.retraitMessage(arg0, r);
-		out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
-		nbPlein--; // on elève une case du nombre de cases pleines
+		if(r.nbMessage == 1){
+			System.out.println("fin des exemplaires");
+			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
+			nbPlein--; // on elève une case du nombre de cases pleines
+			//r.mutexMulti.V();
+		}else{
+			System.out.println("il y a "+r.nbMessage+" il reste maintenant +"+(r.nbMessage-1));
+			r.nbMessage--;
+		}
 		sMutex.V(); // on reveille tout le monde histoire de voir si des producteurs ne pourraient pas mettre de nouveaux messages
 		//Réveille un thread
 		sProd.V();
@@ -63,6 +76,7 @@ public class ProdCons implements Tampon {
 		observateur.depotMessage(arg0, m);
 		in = (in+1)%taille; // on calcul la prochaine position du prochain message
 		nbPlein++; // on dit qu'un message de plus est à lire
+		//((MessageX) m).mutexMulti.P(); // bloquage du producteur
 		sMutex.V();
 		sCons.V();// on reveille tous les autres, histoire que quelqu'un puisse lire ce message ou un autre, ou dépose un nouveau message après celui là
 	}

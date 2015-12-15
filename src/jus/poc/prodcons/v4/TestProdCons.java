@@ -8,10 +8,11 @@ import java.util.Properties;
 
 public class TestProdCons extends Simulateur {
 
-	int nbProd,nbCons,nbBuffer;
-	int nombreMoyenDeProduction,deviationNombreMoyenDeProduction;
+	int nbProd, nbCons, nbBuffer;
+	int nombreMoyenDeProduction, deviationNombreMoyenDeProduction;
 	int tempsMoyenProduction, deviationTempsMoyenProduction;
-	int tempsMoyenConsommation,deviationTempsMoyenConsommation;
+	int tempsMoyenConsommation, deviationTempsMoyenConsommation;
+	int nombreMoyenNbExemplaire, deviationNombreMoyenNbExemplaire;
 	boolean inhiber;
 
     protected void init(String file) {
@@ -36,6 +37,8 @@ public class TestProdCons extends Simulateur {
         deviationTempsMoyenConsommation=Integer.parseInt(properties.getProperty("deviationTempsMoyenConsommation"));
         nombreMoyenDeProduction=Integer.parseInt(properties.getProperty("nombreMoyenDeProduction"));
         deviationTempsMoyenProduction=Integer.parseInt(properties.getProperty("deviationTempsMoyenProduction"));
+        nombreMoyenNbExemplaire=Integer.parseInt(properties.getProperty("nombreMoyenNbExemplaire"));
+        deviationNombreMoyenNbExemplaire=Integer.parseInt(properties.getProperty("deviationNombreMoyenNbExemplaire"));
         inhiber=Boolean.parseBoolean(properties.getProperty("inhiber"));
     }
     
@@ -44,6 +47,7 @@ public class TestProdCons extends Simulateur {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void run() throws Exception {
 		init("./jus/poc/prodcons/options/options.xml");
@@ -51,21 +55,25 @@ public class TestProdCons extends Simulateur {
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
-		
+		Aleatoire toDuplique = new Aleatoire(nombreMoyenNbExemplaire, deviationNombreMoyenNbExemplaire);		
 		// Class obs
 		observateur.init(nbProd, nbCons, nbBuffer);
 		
 		//Initialiser les prod
 		for(int i=0;i<nbProd;i++)
 		{
-			lesProds.add(new Producteur(observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, data, toProduce.next()));
+			lesProds.add(new Producteur(observateur, tempsMoyenProduction, deviationNombreMoyenDeProduction, 
+					data, toProduce.next(), 
+					toDuplique.next()));
+					//5));
 			 observateur.newProducteur(lesProds.get(i));
 		}
 		
 		//initialiser les cons
 		for(int i=0;i<nbCons;i++)
 		{
-			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, data));
+			lesCons.add(new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, 
+					data));
 			observateur.newConsommateur(lesCons.get(i));
 		}
 
@@ -82,7 +90,8 @@ public class TestProdCons extends Simulateur {
 			lesProds.get(i).join();
 		}
 		
-		//On attend que tous producteurs soits lus
+		//On attend que tous messages soits lus
+		System.out.println("Messages en attente de lecteurs : "+data.enAttente());
 		while(data.enAttente()!=0){}
 		
 		//On termine tous les consommateurs

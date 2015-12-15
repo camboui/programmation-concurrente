@@ -1,10 +1,4 @@
 package jus.poc.prodcons.v4;
-import jus.poc.prodcons.*;
-
-import java.io.IOException;
-import java.util.InvalidPropertiesFormatException;
-import java.util.ArrayList;
-import java.util.Properties;
 
 public class Semaphore {
     int residu;
