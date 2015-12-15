@@ -47,7 +47,7 @@ public class TestProdCons extends Simulateur {
 	@Override
 	protected void run() throws Exception {
 		init("./jus/poc/prodcons/options/options.xml");
-		ProdCons data = new ProdCons(nbBuffer,observateur);
+		ProdCons data = new ProdCons(nbBuffer,observateur,inhiber);
 		ArrayList<Producteur> lesProds = new ArrayList<Producteur>();
 		ArrayList<Consommateur> lesCons = new ArrayList<Consommateur>();
 		Aleatoire toProduce = new Aleatoire(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
