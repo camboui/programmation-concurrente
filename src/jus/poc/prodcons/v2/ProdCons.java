@@ -1,5 +1,6 @@
 package jus.poc.prodcons.v2;
 import jus.poc.prodcons.*;
+import jus.poc.prodcons.v3.MessageX;
 
 public class ProdCons implements Tampon {
 
@@ -32,19 +33,16 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public MessageX get(_Consommateur arg0) throws Exception, InterruptedException {
-	
-		//Si le buffer est vide, on attend jusqu'à ce qu'il contienne un message
-		sCons.P();
-		sMutex.P();
-
+		sCons.P(); // S'il y a une ressource, elle est lue. Sinon, Le consommateur est mis en pause.
+		// Si quelqu'un accède déjà à la SC, celui qui arrive ici est mis en pause.
+		sMutex.P(); //On protège les données partagées
 		MessageX r = buffer[out]; // on recupère le bon message
 		if(!inhiber){
 			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());}
 		out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
 		nbPlein--; // on elève une case du nombre de cases pleines
-		sMutex.V(); // on reveille tout le monde histoire de voir si des producteurs ne pourraient pas mettre de nouveaux messages
-		//Réveille un thread
-		sProd.V();
+		sMutex.V(); // On redonne l'accès aux données partagées
+		sProd.V(); //On réveille un producteur
 		
 		return  r; // on retourne le message
 	}
@@ -52,15 +50,17 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public void put(_Producteur arg0, Message m) throws Exception,InterruptedException {
-		sProd.P();
-		sMutex.P();
+		
+		sProd.P(); // On produit.Si tous les messages sont produits, on attend
+		// Si quelqu'un accède déjà à la SC, celui qui arrive ici est mis en pause.
+		sMutex.P(); //On protège les données partagées 
 		buffer[in] = (MessageX) m; // on charge le message dans le buffer
 		if(!inhiber){
 			System.out.println("Producteur "+arg0.identification() + " : " + m.toString());}
 		in = (in+1)%taille; // on calcul la prochaine position du prochain message
 		nbPlein++; // on dit qu'un message de plus est à lire
-		sMutex.V();
-		sCons.V();// on reveille tous les autres, histoire que quelqu'un puisse lire ce message ou un autre, ou dépose un nouveau message après celui là
+		sMutex.V();// On redonne l'accès aux données partagées
+		sCons.V();//On reveille un consommateur
 	}
 
 	@Override
