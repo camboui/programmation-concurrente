@@ -30,8 +30,8 @@ public class ProdCons implements Tampon {
 	 */
 	public int enAttente() {
 		int nbAttente = 0;
-		for(int i=(out%taille) ; i<(in%taille) ; i++){
-			nbAttente += buffer[i].nbMessage;
+		for(int i=(out%taille) ; i<(in%taille + taille) ; i++){
+			nbAttente += buffer[i%taille].nbMessage;
 			System.out.println("en attendte() : "+nbAttente);
 		}
 		return nbAttente;
@@ -47,7 +47,8 @@ public class ProdCons implements Tampon {
 		this.enAttente();
 		MessageX r = buffer[out]; // on recupère le bon message
 		if(!inhiber){
-			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());}
+			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());
+		}
 		observateur.retraitMessage(arg0, r);
 		if(r.nbMessage == 1){
 			System.out.println("fin des exemplaires");
