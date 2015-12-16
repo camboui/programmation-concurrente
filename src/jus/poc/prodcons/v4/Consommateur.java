@@ -39,7 +39,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			//Il consomme
 			currentNbMessLect++;
 			try {
-				mess=data.get(this);
+				mess = data.get(this);
 				observateur.consommationMessage(this, mess, delaisCons);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -7,7 +7,7 @@ public class ProdCons implements Tampon {
 	int nbPlein; // combien de cases sont pleines
 	int in, out; // ou doit être mis/lu le prochain message
 	MessageX[] buffer; // le buffer en lui même
-	Semaphore sCons, sProd,sMutex; // Les sémaphores producteur et consommateur
+	Semaphore sCons, sProd, sMutex, sExemplaires; // Les sémaphores producteur et consommateur
 	Observateur observateur;
 	boolean inhiber;
 	
@@ -22,6 +22,7 @@ public class ProdCons implements Tampon {
 		this.sProd = new Semaphore(taille);
 		this.sCons = new Semaphore(0);
 		this.sMutex = new Semaphore(1);
+		this.sExemplaires = new Semaphore(0);
 	}
 	
 	@Override
@@ -32,7 +33,13 @@ public class ProdCons implements Tampon {
 		int nbAttente = 0;
 		for(int i=(out%taille) ; i<(in%taille + taille) ; i++){
 			nbAttente += buffer[i%taille].nbMessage;
-			System.out.println("en attendte() : "+nbAttente);
+		}
+		System.out.println("en attente() : "+nbAttente);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return nbAttente;
 		//return (in-out)%taille;
@@ -44,7 +51,8 @@ public class ProdCons implements Tampon {
 		sCons.P(); // S'il y a une ressource, elle est lue. Sinon, Le consommateur est mis en pause.
 		// Si quelqu'un accède déjà à la SC, celui qui arrive ici est mis en pause.
 		sMutex.P(); //On protège les données partagées
-		this.enAttente();
+		//this.enAttente();
+		System.out.println("Consommation");
 		MessageX r = buffer[out]; // on recupère le bon message
 		if(!inhiber){
 			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());
@@ -54,13 +62,13 @@ public class ProdCons implements Tampon {
 			System.out.println("fin des exemplaires");
 			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
 			nbPlein--; // on elève une case du nombre de cases pleines
-			//r.mutexMulti.V();
+			sExemplaires.V();
 		}else{
 			System.out.println("il y a "+r.nbMessage+" il reste maintenant +"+(r.nbMessage-1));
 			r.nbMessage--;
 		}
 		sMutex.V(); // On redonne l'accès aux données partagées
-		sProd.V(); //On réveille un producteur
+		sCons.V(); //On réveille un producteur
 		
 		return  r; // on retourne le message
 	}
@@ -77,9 +85,10 @@ public class ProdCons implements Tampon {
 		observateur.depotMessage(arg0, m);
 		in = (in+1)%taille; // on calcul la prochaine position du prochain message
 		nbPlein++; // on dit qu'un message de plus est à lire
-		//((MessageX) m).mutexMulti.P(); // bloquage du producteur
 		sMutex.V();// On redonne l'accès aux données partagées
 		sCons.V();//On reveille un consommateur
+		sExemplaires.P(); // bloquage du producteur
+		sProd.V();
 		}
 
 	@Override
