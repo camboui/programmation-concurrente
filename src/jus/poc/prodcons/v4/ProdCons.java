@@ -56,9 +56,10 @@ public class ProdCons implements Tampon {
 			r.nbMessage--;
 			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
 			nbPlein--; // on elève une case du nombre de cases pleines
-			sExemplaires.V();
+			//sExemplaires.V();
 		}else if(r.nbMessage == 0){
-			System.out.println("Erreur message vide");
+			System.out.println("Erreur message vide, nbplein = "+nbPlein+", enAttente() = "+this.enAttente());
+			// il faut empecher ce cas, c'est celui ou l'on attend que le programme Test ferme les Consomateurs !!
 		}else{
 			System.out.println("il y a "+r.nbMessage+" il reste maintenant +"+(r.nbMessage-1));
 			r.nbMessage--;
