@@ -14,7 +14,7 @@ public class MessageX implements Message {
 		this.messNum = messNum;
 		this.nbMessage = nbMessage;
 		//this.mutexMulti = new Semaphore(1);
-		System.out.println("NbExemplaire = "+this.nbMessage);
+		//System.out.println("NbExemplaire = "+this.nbMessage);
 	}
 	
 	/*public int nbExemplaire(){
