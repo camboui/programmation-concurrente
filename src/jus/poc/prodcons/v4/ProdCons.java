@@ -34,7 +34,6 @@ public class ProdCons implements Tampon {
 		for(int i=(out%taille) ; i<(in%taille + taille) ; i++){
 			nbAttente += buffer[i%taille].nbMessage;
 		}
-		//System.out.println("en attente() : "+nbAttente);
 		return nbAttente;
 	}
 
@@ -44,33 +43,22 @@ public class ProdCons implements Tampon {
 		sCons.P(); // S'il y a une ressource, elle est lue. Sinon, Le consommateur est mis en pause.
 		// Si quelqu'un accède déjà à la SC, celui qui arrive ici est mis en pause.
 		sMutex.P(); //On protège les données partagées
-		//this.enAttente();
-		//System.out.println("Consommation à "+out);
 		MessageX r = buffer[out]; // on recupère le bon message
 		if(!inhiber){
 			System.out.println("Consommateur " +  arg0.identification() + " : "+ r.toString());
 		}
 		observateur.retraitMessage(arg0, r);
 		if(r.nbMessage == 1){
-			//System.out.println("fin des exemplaires");
 			r.nbMessage--;
 			out = (out+1)%taille; // ou calcule ou sera le prochain message à lire
 			nbPlein--; // on elève une case du nombre de cases pleines
 			sProd.V(); //On réveille un producteur
 			sExemplaires.V(); // reveil de celui qui a créé le message
-		}/*else if(r.nbMessage == 0){
-			System.out.println("Erreur message vide, nbplein = "+nbPlein+", enAttente() = "+this.enAttente());
-			// il faut empecher ce cas, c'est celui ou l'on attend que le programme Test ferme les Consomateurs !!
-			if(enAttente() == 0){
-				sExemplaires.P();
-			}
-		}*/else{
-			//System.out.println("il y a "+r.nbMessage+" il reste maintenant :"+(r.nbMessage-1));
+		}else{
 			r.nbMessage--;
 			sCons.V();
 		}
 		sMutex.V(); // On redonne l'accès aux données partagées
-		
 		
 		return  r; // on retourne le message
 	}

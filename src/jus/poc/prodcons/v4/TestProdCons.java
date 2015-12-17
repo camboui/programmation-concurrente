@@ -91,7 +91,6 @@ public class TestProdCons extends Simulateur {
 		}
 		
 		//On attend que tous messages soits lus
-		System.out.println("Messages en attente de lecteurs : "+data.enAttente());
 		while(data.enAttente()!=0){}
 		
 		//On termine tous les consommateurs
